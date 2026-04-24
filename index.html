@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Viplogin - Bangkok ParTee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .custom-input {
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .custom-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .custom-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-neutral-900 relative text-white">
+
+    <div id="login-view" class="relative z-20 w-full min-h-screen flex flex-col items-center justify-end pb-16 px-6">
+        <div class="absolute inset-0 z-0">
+            <img src="cover.png" onerror="this.src='https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&q=80&w=800'" class="w-full h-full object-cover object-center" alt="Welcome Cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-sm bg-[#1a1c10]/60 backdrop-blur-xl p-8 rounded-[2rem] border border-[#d4af37]/30 shadow-2xl text-center">
+            <h2 class="text-sm font-serif text-[#d4af37] tracking-[0.25em] uppercase mb-6 drop-shadow-md">Member Access</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <input type="text" id="member-id" placeholder="MEMBER ID" class="custom-input w-full text-center tracking-[0.15em] text-xs px-4 py-4 rounded-xl" required/>
+                </div>
+                <div class="mb-6">
+                    <input type="password" id="vip-password" placeholder="PASSWORD" class="custom-input w-full text-center tracking-[0.15em] text-xs px-4 py-4 rounded-xl" required/>
+                </div>
+                <p id="login-error" class="text-red-400 text-xs hidden mb-4">Invalid ID or Password.</p>
+                <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-b from-[#e0c367] to-[#aa8529] text-black font-bold text-sm tracking-[0.2em] uppercase hover:brightness-110 shadow-[0_4px_15px_rgba(212,175,55,0.3)] transition-all">
+                    Enter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="main-bg" class="hidden fixed inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&q=80&w=1920" class="w-full h-full object-cover" alt="Golf Background">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+    </div>
+
+    <div id="home-view" class="hidden relative z-10 w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+        <div class="text-center mb-8 mt-6">
+            <h1 class="text-3xl md:text-5xl font-serif text-[#d4af37] tracking-[0.2em] uppercase drop-shadow-lg">Bangkok ParTee</h1>
+            <p class="text-neutral-400 text-xs md:text-sm mt-3 tracking-[0.3em] uppercase">Luxury Golf Companions</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl w-full pb-10">
+            <div class="bg-white rounded-[2rem] overflow-hidden shadow-2xl flex flex-col">
+                <div class="h-72 relative">
+                    <img src="https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover object-top">
+                    <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                </div>
+                <div class="p-8 pt-4 flex flex-col flex-1 items-center text-center">
+                    <h2 class="text-2xl font-serif text-[#b8860b] uppercase tracking-wider mb-2">Premium Companions</h2>
+                    <div class="flex items-baseline gap-2 mb-1">
+                        <span class="text-4xl font-bold text-neutral-900">6,500</span><span class="text-xl font-bold text-[#b8860b]">THB</span>
+                    </div>
+                    <p class="text-xs font-semibold text-neutral-500 mb-6 uppercase tracking-wider">/ 18 Holes</p>
+                    <div class="w-full space-y-3 text-left bg-neutral-50 p-5 rounded-2xl border border-neutral-100 flex-1">
+                        <p class="text-sm text-neutral-700"><strong class="text-[#b8860b]">Skill:</strong> Beginner Level</p>
+                        <p class="text-sm text-neutral-700"><strong class="text-[#b8860b]">Profile:</strong> Cute & Friendly Models</p>
+                        <p class="text-sm text-neutral-700"><strong class="text-[#b8860b]">Vibe:</strong> Joyful Entertainment</p>
+                    </div>
+                    <button onclick="showAlbum('premium')" class="mt-8 w-full py-4 rounded-xl bg-gradient-to-r from-[#e6c27a] to-[#b8860b] text-white font-bold tracking-widest flex justify-center items-center gap-2">
+                        VIEW COMPANIONS
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2rem] overflow-hidden shadow-2xl flex flex-col border-[3px] border-[#d4af37]/40">
+                <div class="h-72 relative">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover object-top">
+                    <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                </div>
+                <div class="p-8 pt-4 flex flex-col flex-1 items-center text-center">
+                    <h2 class="text-2xl font-serif text-[#b8860b] uppercase tracking-wider mb-2">Prestige Partners</h2>
+                    <div class="flex items-baseline gap-2 mb-1">
+                        <span class="text-4xl font-bold text-neutral-900">8,000</span><span class="text-xl font-bold text-[#b8860b]">THB</span>
+                    </div>
+                    <p class="text-xs font-semibold text-neutral-500 mb-6 uppercase tracking-wider">/ 18 Holes</p>
+                    <div class="w-full space-y-3 text-left bg-neutral-50 p-5 rounded-2xl border border-neutral-100 flex-1">
+                        <p class="text-sm text-neutral-700"><strong class="text-[#b8860b]">Skill:</strong> Experienced Golfer</p>
+                        <p class="text-sm text-neutral-700"><strong class="text-[#b8860b]">Profile:</strong> Professional & Elite Profiles</p>
+                        <p class="text-sm text-neutral-700"><strong class="text-[#b8860b]">Impact:</strong> Stunning Impact</p>
+                    </div>
+                    <button onclick="showAlbum('prestige')" class="mt-8 w-full py-4 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-white font-bold tracking-widest flex justify-center items-center gap-2">
+                        VIEW COMPANIONS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="album-view" class="hidden relative z-10 w-full min-h-screen flex flex-col pt-8 pb-32 px-4 md:px-8 max-w-6xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+            <button onclick="backToHome()" class="flex items-center gap-2 text-[#d4af37] hover:text-white transition bg-black/40 px-4 py-2 rounded-full border border-[#d4af37]/30">
+                <span class="font-medium tracking-wider text-sm uppercase">Back</span>
+            </button>
+            <h2 id="album-title" class="text-xl md:text-2xl font-serif text-[#d4af37] tracking-[0.1em] uppercase text-right">Gallery</h2>
+        </div>
+        <div id="album-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
+        <div class="fixed bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent flex justify-center pb-8 z-50">
+            <button onclick="handleBooking()" class="w-full max-w-md py-4 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f9f1d0] to-[#d4af37] text-neutral-900 font-bold text-lg tracking-[0.2em] uppercase hover:brightness-110 shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all flex justify-center items-center gap-3">
+                BOOK NOW
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 2. รหัสผ่านคือ VIP (แปลงเป็นรหัสลับ Base64 เพื่อซ่อนจากคนแอบดูโค้ด)
+        const ENCODED_PASS = "VklQ"; 
+
+        const premiumImages = [
+            "https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1522228115018-d838bcce5c3a?auto=format&fit=crop&q=80&w=600"
+        ];
+        const prestigeImages = [
+            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600"
+        ];
+
+        function handleLogin(event) {
+            event.preventDefault(); 
+            const memberIdVal = document.getElementById('member-id').value;
+            const passwordVal = document.getElementById('vip-password').value;
+            
+            // ตรวจสอบรหัสผ่านที่กรอก (แปลงเป็นพิมพ์ใหญ่และเข้ารหัสเทียบกัน)
+            if(btoa(passwordVal.toUpperCase()) === ENCODED_PASS && memberIdVal.trim() !== "") {
+                document.getElementById('login-error').classList.add('hidden');
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('main-bg').classList.remove('hidden');
+                document.getElementById('home-view').classList.remove('hidden');
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function showAlbum(packageType) {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('album-view').classList.remove('hidden');
+            window.scrollTo(0, 0);
+            const title = document.getElementById('album-title');
+            const gallery = document.getElementById('album-gallery');
+            gallery.innerHTML = ''; 
+            let imagesToDisplay = packageType === 'premium' ? premiumImages : prestigeImages;
+            title.innerText = packageType === 'premium' ? 'Premium (6,500 THB)' : 'Prestige (8,000 THB)';
+            imagesToDisplay.forEach(url => {
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'aspect-[3/4] rounded-2xl overflow-hidden shadow-lg border border-[#d4af37]/20 bg-neutral-800';
+                imgDiv.innerHTML = `<img src="${url}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">`;
+                gallery.appendChild(imgDiv);
+            });
+        }
+
+        function backToHome() {
+            document.getElementById('album-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function handleBooking() {
+            const title = document.getElementById('album-title').innerText;
+            const isConfirmed = confirm(`ยืนยันการจอง ${title}\nต้องการติดต่อผ่าน LINE หรือไม่?`);
+            if (isConfirmed) {
+                window.location.href = "https://lin.ee/your_line_id"; // อย่าลืมใส่ลิงก์ LINE ของคุณตรงนี้!
+            }
+        }
+    </script>
+</body>
+</html>
