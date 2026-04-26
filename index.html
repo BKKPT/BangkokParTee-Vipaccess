@@ -4,27 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bangkok ParTee - VIP Access</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com"></script]https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #000; color: white; margin: 0; overflow-x: hidden; }
         .font-serif { font-family: 'Playfair Display', serif; }
-        
-        .custom-input { 
-            background: rgba(0, 0, 0, 0.75); 
-            border: 1px solid rgba(212, 175, 55, 0.5); 
-            color: white; 
+       
+        /* สไตล์ช่องกรอกข้อมูล */
+        .custom-input {
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: white;
         }
         .custom-input:focus { border-color: #d4af37; outline: none; background: rgba(0, 0, 0, 0.9); }
-        
+       
+        /* กล่อง Login ลอยเด่น */
         .login-card {
-            background: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
         }
 
-        .selected-card { border: 4px solid #d4af37 !important; transform: scale(1.03); }
+        .selected-card { border: 4px solid #d4af37 !important; transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hidden { display: none; }
@@ -33,58 +35,78 @@
 <body>
 
 <div class="fixed inset-0 z-0">
-    <img src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png" 
-         class="w-full h-full object-cover object-center">
+    <img src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"
+         class="w-full h-full object-cover object-center opacity-100">
+    <div id="main-overlay" class="absolute inset-0 bg-black/40 transition-all duration-700"></div>
 </div>
 
-<div id="login-view" class="relative z-20 min-h-screen flex items-center justify-center px-6">
+<div id="login-view" class="relative z-20 min-h-screen flex items-center justify-center px-6 fade-in">
     <div class="login-card w-full max-w-sm p-10 rounded-[2.5rem] text-center shadow-2xl">
-        <h2 class="text-[#d4af37] tracking-[0.3em] uppercase font-serif text-sm mb-8">Member Access</h2>
-        <form onsubmit="handleLogin(event)" class="space-y-5">
-            <input type="text" id="member-id" placeholder="MEMBER ID (Any)" class="custom-input w-full text-center py-4 rounded-2xl text-xs tracking-widest uppercase" required>
-            <input type="password" id="vip-password" placeholder="PASSWORD" class="custom-input w-full text-center py-4 rounded-2xl text-xs tracking-widest" required>
-            <button type="submit" class="w-full py-4 mt-2 rounded-2xl bg-gradient-to-b from-[#e0c367] to-[#aa8529] text-black font-extrabold uppercase text-xs tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-95 transition-all">
+        <h2 class="text-[#d4af37] tracking-[0.3em] uppercase font-serif text-sm mb-8">VIP Member Access</h2>
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+            <div class="text-left">
+                <label class="text-[9px] text-[#d4af37] uppercase tracking-widest ml-2 mb-1 block">User ID</label>
+                <input type="text" id="member-id" placeholder="VPBXXXX" class="custom-input w-full text-center py-4 rounded-2xl text-xs tracking-widest uppercase font-bold" required>
+            </div>
+            <div class="text-left">
+                <label class="text-[9px] text-[#d4af37] uppercase tracking-widest ml-2 mb-1 block">Password</label>
+                <input type="password" id="vip-password" placeholder="••••••••" class="custom-input w-full text-center py-4 rounded-2xl text-xs tracking-widest" required>
+            </div>
+            <button type="submit" class="w-full py-4 mt-4 rounded-2xl bg-gradient-to-b from-[#e0c367] to-[#aa8529] text-black font-extrabold uppercase text-xs tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-95 transition-all">
                 Enter
             </button>
         </form>
-        <p id="login-error" class="text-red-500 text-[10px] mt-6 hidden uppercase tracking-widest font-bold">Incorrect Password</p>
+        <p id="login-error" class="text-red-500 text-[10px] mt-6 hidden uppercase tracking-widest font-bold">Invalid ID or Password</p>
     </div>
 </div>
 
 <div id="home-view" class="hidden relative z-10 min-h-screen py-12 px-4 max-w-6xl mx-auto fade-in">
-    <div class="fixed inset-0 bg-black/80 z-[-1]"></div> <div class="text-center mb-10">
+    <div class="text-center mb-10">
         <h1 class="text-3xl font-serif text-[#d4af37] tracking-widest uppercase">Bangkok ParTee</h1>
-        <p id="selection-count" class="text-neutral-400 text-[10px] tracking-[0.2em] uppercase mt-2">Selected: 0/2</p>
+        <p id="selection-count" class="text-neutral-300 text-[10px] tracking-[0.2em] uppercase mt-2">Selected: 0/2</p>
     </div>
+
     <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32"></div>
+
     <div id="next-btn-container" class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent flex justify-center hidden">
-        <button onclick="goToForm()" class="w-full max-w-md py-4 rounded-full bg-[#d4af37] text-black font-bold tracking-widest uppercase shadow-2xl transition-all">Next Step</button>
+        <button onclick="goToForm()" class="w-full max-w-md py-4 rounded-full bg-[#d4af37] text-black font-bold tracking-widest uppercase shadow-2xl transition-all">
+            Next Step
+        </button>
     </div>
 </div>
 
 <div id="form-view" class="hidden relative z-20 min-h-screen flex items-center justify-center px-6 fade-in">
     <div class="login-card w-full max-w-md p-8 rounded-[2.5rem] shadow-2xl border border-[#d4af37]/30">
         <h2 class="text-[#d4af37] font-serif text-xl mb-6 text-center uppercase tracking-widest">Booking Details</h2>
-        <div class="space-y-3">
-            <input type="date" id="book-date" class="custom-input w-full p-4 rounded-xl text-sm shadow-inner">
+        <div class="space-y-4 text-left">
+            <input type="date" id="book-date" class="custom-input w-full p-4 rounded-xl text-sm">
             <input type="time" id="book-time" class="custom-input w-full p-4 rounded-xl text-sm">
             <input type="text" id="book-course" placeholder="Golf Course Name" class="custom-input w-full p-4 rounded-xl text-sm">
+           
             <div class="py-2 border-t border-white/10 mt-2">
-                <p class="text-[10px] text-[#d4af37] mb-2 uppercase tracking-widest">จองสนามแล้วหรือยัง?</p>
-                <div class="flex gap-6">
+                <p class="text-[10px] text-[#d4af37] mb-3 uppercase tracking-widest text-center">จองสนามแล้วหรือยัง?</p>
+                <div class="flex justify-center gap-10">
                     <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="Yes" class="accent-[#d4af37]"> Yes</label>
                     <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="No" class="accent-[#d4af37]"> No</label>
                 </div>
             </div>
-            <p class="text-[9px] text-neutral-400 italic mb-4">* บริการประสานงานจองเวลาและแคดดี้ มีค่าบริการ 300 บาท</p>
-            <button onclick="sendToLine()" class="w-full py-4 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#aa8529] text-black font-bold uppercase tracking-widest text-xs shadow-lg">Confirm & Send LINE</button>
-            <button onclick="backToSelection()" class="w-full text-[10px] text-neutral-500 uppercase mt-4">Back to Edit</button>
+           
+            <p class="text-[9px] text-neutral-400 italic text-center leading-relaxed">
+                * บริการประสานงานจองเวลาและแคดดี้ ค่าบริการ 300 บาท
+            </p>
+
+            <button onclick="sendToLine()" class="w-full py-4 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#aa8529] text-black font-bold uppercase tracking-widest text-xs shadow-lg">
+                Confirm & Send LINE
+            </button>
+            <button onclick="backToSelection()" class="w-full text-[10px] text-neutral-500 uppercase mt-4 text-center block">Back to Edit</button>
         </div>
     </div>
 </div>
 
 <script>
-const VALID_PASS = "Viptest2026"; 
+// --- ⚙️ ตั้งค่าตามที่คุณกำหนด ⚙️ ---
+const VALID_USER_ID = "VPB1001";
+const VALID_PASS = "V1234";
 const LINE_URL = "https://lin.ee/wIkQHc5F";
 
 const companions = [
@@ -98,12 +120,15 @@ let selectedNames = [];
 
 function handleLogin(e){
     e.preventDefault();
+    const idInput = document.getElementById('member-id').value.toUpperCase();
     const passInput = document.getElementById('vip-password').value;
     const errorEl = document.getElementById('login-error');
 
-    if(passInput === VALID_PASS) {
+    // ตรวจสอบทั้ง ID และ Password ตามที่คุณสั่ง
+    if(idInput === VALID_USER_ID && passInput === VALID_PASS) {
         document.getElementById('login-view').classList.add('hidden');
         document.getElementById('home-view').classList.remove('hidden');
+        document.getElementById('main-overlay').classList.replace('bg-black/40', 'bg-black/80');
         renderGallery();
     } else {
         errorEl.classList.remove('hidden');
@@ -115,11 +140,11 @@ function renderGallery(){
     const el = document.getElementById('main-gallery');
     el.innerHTML = companions.map(p => `
         <div id="card-${p.id}" onclick="toggleSelect(${p.id},'${p.name}')" class="cursor-pointer group">
-            <div class="rounded-xl overflow-hidden border border-white/10 card-frame bg-zinc-900 transition-all duration-300 shadow-lg">
+            <div class="rounded-2xl overflow-hidden border border-white/10 card-frame bg-zinc-900 transition-all duration-300">
                 <img src="${p.cover}" class="w-full h-48 object-cover">
             </div>
-            <p class="text-center mt-2 text-[#d4af37] font-bold text-xs uppercase">${p.name}</p>
-            <p class="text-center text-[10px] text-neutral-400 tracking-wider">${p.price}</p>
+            <p class="text-center mt-3 text-[#d4af37] font-bold text-xs uppercase tracking-wider">${p.name}</p>
+            <p class="text-center text-[10px] text-neutral-400">${p.price}</p>
         </div>
     `).join('');
 }
@@ -157,7 +182,7 @@ async function sendToLine(){
     if(!date || !time || !course){ alert("กรุณากรอกข้อมูลให้ครบถ้วน"); return; }
 
     const msg = encodeURIComponent(
-        📍 Bangkok ParTee Booking\n👯 ${selectedNames.join(', ')}\n📅 วันที่: ${date}\n⏰ เวลา: ${time}\n⛳ สนาม: ${course}\n✅ จองสนามแล้ว: ${bookedYet}
+        `📍 New Booking: Bangkok ParTee\n👯 Selected: ${selectedNames.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Booked Course: ${bookedYet}`
     );
     window.location.href = `${LINE_URL}?text=${msg}`;
 }
