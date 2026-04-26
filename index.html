@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bangkok ParTee - Private Access</title>
     
@@ -13,6 +14,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
         
+        /* 2. Security: Disable text selection */
         body, html { 
             margin: 0; padding: 0; background: #000; color: white; 
             font-family: 'Inter', sans-serif; overflow-x: hidden;
@@ -54,10 +56,14 @@
             align-content: space-around; transform: rotate(-30deg);
         }
 
-        /* Profile Info Grid */
+        /* Profile Info Box */
         .info-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.1); padding: 8px; border-radius: 10px; }
         .info-label { font-size: 9px; color: #d4af37; text-transform: uppercase; letter-spacing: 0.5px; }
         .info-value { font-size: 11px; color: #fff; font-weight: 500; }
+
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -86,16 +92,17 @@
     </div>
 
     <div id="intro-view" class="hidden relative z-[100] min-h-screen flex items-center justify-center px-6 py-10">
-        <div class="glass-card w-full max-w-md p-8 overflow-y-auto max-h-[90vh] shadow-2xl text-center">
-            <h2 class="text-[#d4af37] font-serif text-xl mb-6 uppercase tracking-widest">Booking Terms</h2>
-            <div class="bg-black/40 p-5 rounded-2xl border border-[#d4af37]/20 mb-6 text-left">
+        <div class="glass-card w-full max-w-md p-8 overflow-y-auto max-h-[90vh] shadow-2xl">
+            <h2 class="text-[#d4af37] font-serif text-center text-xl mb-6 uppercase tracking-widest">Service Guidelines</h2>
+            <div class="bg-black/40 p-5 rounded-2xl border border-[#d4af37]/20 mb-6">
                 <ul class="text-[10px] space-y-3 text-neutral-300">
-                    <li>🔹 <strong>Limit:</strong> Max 2 companions per booking.</li>
-                    <li>🔹 <strong>More than 2:</strong> Please make separate bookings.</li>
-                    <li>🔹 <strong>Notice:</strong> 48 hours for free rescheduling.</li>
+                    <li>🔹 <strong>Group Size:</strong> Max 2 companions per reservation.</li>
+                    <li>🔹 <strong>Additional Requests:</strong> For more than 2 companions, please complete separate bookings.</li>
+                    <li>🔹 <strong>Rescheduling:</strong> Free with 48-hour notice.</li>
+                    <li>🔹 <strong>Privacy:</strong> No photography/recording during service.</li>
                 </ul>
             </div>
-            <button onclick="startGallery()" class="gold-btn shadow-lg">Enter Gallery</button>
+            <button onclick="startGallery()" class="gold-btn shadow-lg">Acknowledge & Browse</button>
         </div>
     </div>
 
@@ -103,7 +110,7 @@
         <div class="fixed inset-0 bg-black/90 z-[-1]"></div>
         <div class="text-center mb-8">
             <h1 class="text-2xl font-serif text-[#d4af37] tracking-widest uppercase">Gallery</h1>
-            <p id="selection-count" class="text-neutral-500 text-[10px] mt-2 uppercase tracking-widest">Select Max 2: 0/2</p>
+            <p id="selection-count" class="text-neutral-500 text-[10px] mt-2 uppercase tracking-widest">Selected: 0/2</p>
         </div>
         <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32"></div>
         
@@ -119,9 +126,8 @@
             <div class="swiper-pagination"></div>
         </div>
         
-        <div class="p-6 bg-gradient-to-t from-black via-black/90 to-transparent">
-            <div id="profile-info-content" class="mb-6">
-                </div>
+        <div class="p-6 bg-gradient-to-t from-black via-black/95 to-transparent">
+            <div id="profile-info-content" class="mb-6"></div>
             <button id="modal-video-btn" class="hidden video-btn">🎬 Watch Preview Video</button>
             <button id="modal-select-btn" class="gold-btn shadow-2xl">Add to Selection</button>
         </div>
@@ -129,7 +135,7 @@
 
     <div id="video-overlay" class="hidden fixed inset-0 z-[500] bg-black/95 flex items-center justify-center p-4">
         <button onclick="closeVideo()" class="absolute top-8 right-8 text-white text-4xl z-[510]">&times;</button>
-        <div class="w-full max-w-3xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl">
+        <div class="w-full max-w-3xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
             <video id="player-source" controls playsinline class="w-full h-full"></video>
         </div>
     </div>
@@ -141,8 +147,15 @@
                 <input type="date" id="book-date" class="custom-input">
                 <input type="time" id="book-time" class="custom-input">
                 <input type="text" id="book-course" placeholder="Golf Course Name" class="custom-input">
-                <button onclick="confirmBooking()" class="gold-btn mt-2">Send Request to LINE</button>
-                <button onclick="backToHome()" class="w-full text-[10px] text-neutral-500 uppercase mt-4">Back</button>
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-center">
+                    <div class="text-[10px] text-[#d4af37] mb-3 uppercase tracking-widest">Tee-time already booked?</div>
+                    <div class="flex justify-center gap-8">
+                        <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="Yes" class="accent-[#d4af37]"> Yes</label>
+                        <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="No" class="accent-[#d4af37]"> No</label>
+                    </div>
+                </div>
+                <button onclick="confirmBooking()" class="gold-btn mt-2">Book via LINE</button>
+                <button onclick="backToHome()" class="w-full text-[10px] text-neutral-500 uppercase mt-4">Back to Gallery</button>
             </div>
         </div>
     </div>
@@ -151,48 +164,50 @@
     <script>
         const VALID_ID = "VPB1001", VALID_PASS = "V1234", LINE_LINK = "https://lin.ee/wIkQHc5F";
 
-       const companions = [
-    {
-        id: "BPC26001T", 
-        name: "SNOW H160/W49 32/25/27", 
-        price: "6,500 THB",
-        golfScore: "105-109",
-        language: "ENG- Good Conversation, Thai",
-        drink: "Social Drinker",
-        character: "Friendly & Calm & Elegant.. Focused on growth, good energy, and meaningful connections—golf just happens to be my favorite place for all three.",
-        workDays: "Mon - Sat",
-        shift: "Day Golf & Morning Tee",
-        cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
-        photos: [
-            "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
-            "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/IMG_0116.jpeg",
-            "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260426_2.jpg"
-        ],
-        video: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/798745786.161923.mp4" 
-        // หมายเหตุ: ตรงวิดีโอ ผมเติม path เต็มให้ด้วยเพื่อให้มันเล่นได้นะครับ
-    },
-    {
-        id: "BPC26002T", 
-        name: "Princess H163/W48 33-24-35", 
-        price: "6,500 THB",
-        golfScore: "105-109",
-        language: "English, Japanese",
-        drink: "Social Drinker",
-        character: "Friendly & Active Entertainer .. Cheerful, easygoing, and fun to be around ⛳ Relaxed vibes, friendly, and always on time.Let’s enjoy a great round together 😊",
-        workDays: "Everyday",
-        shift: "Day Golf only",
-        cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
-        photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
-        video: null
-    }
-];
+        const companions = [
+            {
+                id: "BPC26001T", 
+                name: "SNOW H160/W49 32/25/27", 
+                price: "6,500 THB",
+                golfScore: "105-109",
+                language: "ENG- Good Conversation, Thai",
+                drink: "Social Drinker",
+                character: "Friendly & Calm & Elegant.. Focused on growth, good energy, and meaningful connections.",
+                workDays: "Mon - Sat",
+                shift: "Day Golf & Morning Tee",
+                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
+                photos: [
+                    "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
+                    "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/IMG_0116.jpeg",
+                    "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260426_2.jpg"
+                ],
+                video: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/798745786.161923.mp4"
+            },
+            {
+                id: "BPC26002T", 
+                name: "Princess H163/W48 33-24-35", 
+                price: "6,500 THB",
+                golfScore: "105-109",
+                language: "English, Japanese",
+                drink: "Social Drinker",
+                character: "Friendly & Active Entertainer .. Cheerful, easygoing, and fun to be around ⛳ Let's enjoy!",
+                workDays: "Everyday",
+                shift: "Day Golf only",
+                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
+                photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
+                video: null
+            }
+        ];
+
         let selected = [], currentSwiperGirl = null, swiper;
 
-        // Security
+        // --- Security Features ---
         document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = e => { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
         window.addEventListener('blur', () => document.body.style.filter = 'blur(15px)');
         window.addEventListener('focus', () => document.body.style.filter = 'none');
 
+        // --- Navigation Logic ---
         function handleLogin(e) {
             e.preventDefault();
             const id = document.getElementById('user-id').value.toUpperCase().trim();
@@ -212,35 +227,33 @@
         function renderList() {
             document.getElementById('main-gallery').innerHTML = companions.map(c => `
                 <div id="card-${c.id}" class="cursor-pointer group">
-                    <div onclick="openProfile(${c.id})" class="rounded-2xl overflow-hidden border border-white/10 card-frame bg-zinc-900 aspect-[3/4]">
+                    <div onclick="openProfile('${c.id}')" class="rounded-2xl overflow-hidden border border-white/10 card-frame bg-zinc-900 aspect-[3/4]">
                         <img src="${c.cover}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <p class="text-center mt-3 text-[#d4af37] font-bold text-xs uppercase tracking-widest">${c.name}</p>
+                    <p class="text-center mt-3 text-[#d4af37] font-bold text-[10px] uppercase tracking-widest">${c.name.split(' ')[0]}</p>
                 </div>
             `).join('');
             updateSelectionUI();
         }
 
+        // --- Modal Logic ---
         function openProfile(id) {
             currentSwiperGirl = companions.find(c => c.id === id);
-            
-            // Inject Slides
             const slides = currentSwiperGirl.photos.map(p => `<div class="swiper-slide"><img src="${p}" class="w-full h-full object-cover"></div>`).join('');
             document.getElementById('modal-slides').innerHTML = slides;
             
-            // Inject Info Grid (Easy to Read)
             document.getElementById('profile-info-content').innerHTML = `
                 <div class="text-center mb-4">
-                    <h2 class="text-[#d4af37] text-2xl font-serif uppercase tracking-widest">${currentSwiperGirl.name}</h2>
-                    <p class="text-[#d4af37] font-bold text-sm">${currentSwiperGirl.price}</p>
+                    <h2 class="text-[#d4af37] text-xl font-serif uppercase tracking-widest">${currentSwiperGirl.name}</h2>
+                    <p class="text-neutral-400 text-[10px] font-bold mt-1">ID: ${currentSwiperGirl.id}</p>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="info-box"><p class="info-label">⛳ Golf Score</p><p class="info-value">${currentSwiperGirl.golfScore}</p></div>
                     <div class="info-box"><p class="info-label">🗣️ Language</p><p class="info-value">${currentSwiperGirl.language}</p></div>
                     <div class="info-box"><p class="info-label">🍸 Drinking</p><p class="info-value">${currentSwiperGirl.drink}</p></div>
-                    <div class="info-box"><p class="info-label">📅 Working Days</p><p class="info-value">${currentSwiperGirl.workDays}</p></div>
-                    <div class="info-box col-span-2"><p class="info-label">✨ Character</p><p class="info-value">${currentSwiperGirl.character}</p></div>
-                    <div class="info-box col-span-2"><p class="info-label">☀️ Shift</p><p class="info-value">${currentSwiperGirl.shift}</p></div>
+                    <div class="info-box"><p class="info-label">📅 Days</p><p class="info-value">${currentSwiperGirl.workDays}</p></div>
+                    <div class="info-box col-span-2"><p class="info-label">☀️ Working Shift</p><p class="info-value">${currentSwiperGirl.shift}</p></div>
+                    <div class="info-box col-span-2"><p class="info-label">✨ Character</p><p class="info-value text-[10px] leading-relaxed">${currentSwiperGirl.character}</p></div>
                 </div>
             `;
 
@@ -255,15 +268,19 @@
             swiper = new Swiper(".mySwiper", { pagination: { el: ".swiper-pagination", clickable: true } });
 
             const sBtn = document.getElementById('modal-select-btn');
-            sBtn.onclick = () => toggleSelect(currentSwiperGirl.id, currentSwiperGirl.name);
+            sBtn.onclick = () => toggleSelect(currentSwiperGirl.name);
             sBtn.innerText = selected.includes(currentSwiperGirl.name) ? "Remove Selection" : "Add to Selection";
             sBtn.className = selected.includes(currentSwiperGirl.name) ? "w-full py-4 rounded-xl bg-red-900/50 text-white border border-red-500 font-bold uppercase text-xs" : "gold-btn shadow-2xl";
         }
 
-        function toggleSelect(id, name) {
+        // --- Selection Logic ---
+        function toggleSelect(name) {
             if (selected.includes(name)) { selected = selected.filter(n => n !== name); } 
             else {
-                if (selected.length >= 2) { alert("Max 2 companions allowed."); return; }
+                if (selected.length >= 2) { 
+                    alert("Maximum 2 companions allowed per reservation.\nFor more companions, please complete this booking first."); 
+                    return; 
+                }
                 selected.push(name);
             }
             closeProfile(); updateSelectionUI();
@@ -274,31 +291,35 @@
                 const card = document.getElementById(`card-${c.id}`)?.querySelector('.card-frame');
                 if (card) card.classList.toggle('selected-card', selected.includes(c.name));
             });
-            document.getElementById('selection-count').innerText = `Limit: 2 Max (Selected: ${selected.length}/2)`;
+            document.getElementById('selection-count').innerText = `Selected: ${selected.length}/2`;
             document.getElementById('next-btn-container').classList.toggle('hidden', selected.length === 0);
         }
 
+        // --- Video Player Logic ---
         function playVideo(url) {
             const p = document.getElementById('player-source');
             p.src = url;
             document.getElementById('video-overlay').classList.remove('hidden');
             p.play();
         }
-
         function closeVideo() {
             const p = document.getElementById('player-source');
             p.pause(); p.src = "";
             document.getElementById('video-overlay').classList.add('hidden');
         }
 
+        // --- Navigation Helpers ---
         function closeProfile() { document.getElementById('profile-modal').classList.add('hidden'); }
         function goToForm() { document.getElementById('home-view').classList.add('hidden'); document.getElementById('form-view').classList.remove('hidden'); }
         function backToHome() { document.getElementById('form-view').classList.add('hidden'); document.getElementById('home-view').classList.remove('hidden'); }
 
+        // --- Final Booking ---
         function confirmBooking() {
             const date = document.getElementById('book-date').value, time = document.getElementById('book-time').value, course = document.getElementById('book-course').value;
-            if(!date || !time || !course) { alert("Please complete all fields."); return; }
-            const msg = encodeURIComponent(`📍 *NEW RESERVATION*\n👯 Companions: ${selected.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}`);
+            const booked = document.querySelector('input[name="booked-yet"]:checked')?.value || "No";
+            if(!date || !time || !course) { alert("Please complete all reservation fields."); return; }
+            
+            const msg = encodeURIComponent(`📍 *NEW RESERVATION*\n👯 Companions: ${selected.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Pre-booked: ${booked}`);
             window.location.href = `${LINE_LINK}?text=${msg}`;
             setTimeout(() => { window.location.reload(); }, 1500);
         }
