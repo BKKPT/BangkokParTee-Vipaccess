@@ -197,26 +197,31 @@
                 language: "Eng- Good Conversation , Thai",
                 drink: "Social Drinker",
                 workDays: "Mon, Tue, Wed, Sat, Sun",
-                character: "Freelance Model | Friendly & High Energy … I'm better at drinking than putting! 🍸 Golf is my passion, but fun is my mission. My score isn't great, but I'm a Pro at making you smile.",
+                character: "Freelance Model | Friendly & High Energy … I'm better at drinking than putting! 🍸 Golf is my passion, but fun is my mission.",
                 shift: "Night Golf",
                 cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
                 photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
                 video: null
             },
             {
-        id: "BPC26004T",
-        name: "Yui H158/W41   34-4-33", 
-price: "6,500 THB", 
-        golfScore: "⛳ 95-105", "Freelance Model", 
-        language: "Eng- Basic Skills , Thai",
-        drink: "Social Drinker",
-        workDays: "Everyday",
-        character: "Friendly & Easy-going … I’m a small girl , but I love to have fun and enjoy with golf",
-        shift: " Night Golf",
+                id: "BPC26004T",
+                name: "Yui H158/W41 34-4-33", 
+                price: "6,500 THB", 
+                golfScore: "95-105",
+                language: "Eng- Basic Skills , Thai",
+                drink: "Social Drinker",
+                workDays: "Everyday",
+                character: "Freelance Model | Friendly & Easy-going … I’m a small girl, but I love to have fun and enjoy golf!",
+                shift: "Night Golf",
+                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
+                photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
+                video: null
+            }
         ];
 
         let selected = [], currentSwiperGirl = null, swiper;
 
+        // --- Security Features ---
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = e => { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
         window.addEventListener('blur', () => document.body.style.filter = 'blur(15px)');
@@ -334,3 +339,4 @@ price: "6,500 THB",
     </script>
 </body>
 </html>
+
