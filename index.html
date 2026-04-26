@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bangkok ParTee - Private Access</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
-        body, html { margin: 0; padding: 0; background: #000; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
+        /* 2. ป้องกันการลากคลุมข้อความ */
+        body, html { 
+            margin: 0; padding: 0; background: #000; color: white; 
+            font-family: 'Inter', sans-serif; overflow-x: hidden;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        }
+        
         .font-serif { font-family: 'Playfair Display', serif; }
 
+        /* พื้นหลังและเลเยอร์ */
         .bg-full { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; object-fit: cover; }
         .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2; transition: all 0.5s; }
 
+        /* ดีไซน์การ์ดและปุ่ม */
         .glass-card {
             background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 2rem;
@@ -30,30 +44,44 @@
             text-transform: uppercase; letter-spacing: 1px; width: 100%; cursor: pointer;
         }
 
-        /* Video Button Style */
         .video-btn {
             border: 1px solid #d4af37; color: #d4af37; background: rgba(212, 175, 55, 0.1);
-            padding: 10px; border-radius: 12px; font-size: 10px; font-weight: bold;
-            text-transform: uppercase; letter-spacing: 1px; width: 100%; margin-bottom: 10px;
+            padding: 12px; border-radius: 12px; font-size: 11px; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 1px; width: 100%; margin-bottom: 12px;
         }
 
-        .tier-table td, .tier-table th { border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding: 12px 8px; font-size: 11px; }
+        /* สถานะการเลือก */
         .selected-card { border: 3px solid #d4af37 !important; transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .tier-table td, .tier-table th { border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding: 12px 8px; font-size: 11px; }
         
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .swiper-pagination-bullet { background: #d4af37 !important; }
+        /* ลายน้ำ (Watermark) */
+        #watermark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            pointer-events: none; z-index: 9999; overflow: hidden; opacity: 0.08; 
+            display: flex; flex-wrap: wrap; justify-content: space-around; 
+            align-content: space-around; transform: rotate(-30deg);
+        }
     </style>
 </head>
 <body>
+
+    <div id="watermark">
+        <script>
+            for (let i = 0; i < 20; i++) {
+                document.write('<span style="font-size: 18px; font-weight: bold; color: #d4af37; margin: 60px;">BANGKOK PARTEE VIP</span>');
+            }
+        </script>
+    </div>
 
     <img id="bg-img" class="bg-full" src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png">
     <div id="bg-mask" class="bg-overlay"></div>
 
     <div id="login-view" class="relative z-[100] flex items-center justify-center min-h-screen px-6">
-        <div class="glass-card w-full max-w-sm p-10 text-center shadow-2xl">
+        <div class="glass-card w-full max-sm:max-w-xs p-10 text-center shadow-2xl">
             <h2 class="text-[#d4af37] font-serif tracking-[0.2em] uppercase text-xs mb-8">VIP Member Access</h2>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <input type="text" id="user-id" placeholder="USER ID" class="custom-input uppercase" required>
@@ -88,9 +116,9 @@
                     <span class="mr-2">📋</span> Booking Guidelines
                 </h3>
                 <ul class="text-[10px] space-y-3 text-neutral-300">
-                    <li>🔹 <strong>Group Size:</strong> Max 2 companions.</li>
-                    <li>🔹 <strong>Rescheduling:</strong> 48 hours in advance (Free).</li>
-                    <li>🔹 <strong>Late Notice:</strong> Less than 48h = <span class="text-red-400">30% fee</span>.</li>
+                    <li>🔹 <strong>Limit:</strong> สูงสุด 2 ท่าน ต่อ 1 รายการจอง</li>
+                    <li>🔹 <strong>More than 2:</strong> หากต้องการมากกว่า 2 ท่าน <span class="text-[#d4af37]">ต้องจองเพิ่มแยกรายการ</span></li>
+                    <li>🔹 <strong>Rescheduling:</strong> แจ้งล่วงหน้า 48 ชม. (ฟรี)</li>
                 </ul>
             </div>
 
@@ -102,7 +130,7 @@
         <div class="fixed inset-0 bg-black/90 z-[-1]"></div>
         <div class="text-center mb-8">
             <h1 class="text-2xl font-serif text-[#d4af37] tracking-widest uppercase">Gallery</h1>
-            <p id="selection-count" class="text-neutral-500 text-[10px] mt-2 uppercase tracking-widest">Select Max 2: 0/2</p>
+            <p id="selection-count" class="text-neutral-500 text-[10px] mt-2 uppercase tracking-widest">Selected: 0/2</p>
         </div>
         <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32"></div>
         
@@ -118,7 +146,7 @@
             <div class="swiper-pagination"></div>
         </div>
         <div class="p-8 bg-gradient-to-t from-black via-black/80 to-transparent">
-            <button id="modal-video-btn" class="hidden video-btn mb-4">🎬 Watch Video</button>
+            <button id="modal-video-btn" class="hidden video-btn">🎬 Watch Video</button>
             <button id="modal-select-btn" class="gold-btn shadow-2xl transition-transform active:scale-95">Select this Companion</button>
         </div>
     </div>
@@ -137,8 +165,8 @@
                 <input type="date" id="book-date" class="custom-input">
                 <input type="time" id="book-time" class="custom-input">
                 <input type="text" id="book-course" placeholder="Golf Course Name" class="custom-input">
-                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
-                    <div class="text-center text-[10px] text-[#d4af37] mb-3 uppercase tracking-widest">Have you booked the tee time?</div>
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-center">
+                    <div class="text-[10px] text-[#d4af37] mb-3 uppercase tracking-widest">Have you booked the tee time?</div>
                     <div class="flex justify-center gap-8">
                         <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="Yes" class="accent-[#d4af37]"> Yes</label>
                         <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="No" class="accent-[#d4af37]"> No</label>
@@ -154,24 +182,33 @@
     <script>
         const VALID_ID = "VPB1001", VALID_PASS = "V1234", LINE_LINK = "https://lin.ee/wIkQHc5F";
 
-        // เพิ่มฟิลด์ video: "URL วิดีโอของคุณ" ใน companions
+        // ข้อมูลหลัก (แก้ไขที่นี่)
         const companions = [
             {id:1, name:"Mochi", price:"5,000 THB", cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
              photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], video: "https://www.w3schools.com/html/mov_bbb.mp4"},
             {id:2, name:"Nana", price:"5,500 THB", cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
-             photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], video: null},
-            {id:3, name:"Yuki", price:"6,000 THB", cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
-             photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], video: "https://www.w3schools.com/html/mov_bbb.mp4"},
-            {id:4, name:"Sora", price:"6,500 THB", cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
              photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], video: null}
         ];
 
-        let selected = [], currentSwiperGirl = null;
-        let swiper;
+        let selected = [], currentSwiperGirl = null, swiper;
 
+        /* 4. ระบบความปลอดภัยเบื้องต้น */
+        // ป้องกันคลิกขวา
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        // ป้องกันการกด F12 / Inspect Element
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0)))) return false;
+        };
+        // เบลอหน้าจอเมื่อสลับแอป (ป้องกันการแคปหน้าจอในบางกรณี)
+        window.addEventListener('blur', () => document.body.style.filter = 'blur(15px)');
+        window.addEventListener('focus', () => document.body.style.filter = 'none');
+
+        /* ระบบนำทางและตรรกะการเลือก */
         function handleLogin(e) {
             e.preventDefault();
-            if (document.getElementById('user-id').value.toUpperCase().trim() === VALID_ID && document.getElementById('user-pass').value === VALID_PASS) {
+            const id = document.getElementById('user-id').value.toUpperCase().trim();
+            const pass = document.getElementById('user-pass').value;
+            if (id === VALID_ID && pass === VALID_PASS) {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('intro-view').classList.remove('hidden');
             } else { document.getElementById('err-msg').classList.remove('hidden'); }
@@ -200,41 +237,34 @@
             const slides = currentSwiperGirl.photos.map(p => `<div class="swiper-slide"><img src="${p}" class="w-full h-full object-cover"></div>`).join('');
             document.getElementById('modal-slides').innerHTML = slides;
             
-            // Check Video
-            const videoBtn = document.getElementById('modal-video-btn');
+            const vBtn = document.getElementById('modal-video-btn');
             if (currentSwiperGirl.video) {
-                videoBtn.classList.remove('hidden');
-                videoBtn.onclick = () => playVideo(currentSwiperGirl.video);
-            } else { videoBtn.classList.add('hidden'); }
+                vBtn.classList.remove('hidden');
+                vBtn.onclick = () => playVideo(currentSwiperGirl.video);
+            } else { vBtn.classList.add('hidden'); }
 
             document.getElementById('profile-modal').classList.remove('hidden');
             if (swiper) swiper.destroy();
             swiper = new Swiper(".mySwiper", { pagination: { el: ".swiper-pagination", clickable: true }, loop: currentSwiperGirl.photos.length > 1 });
 
-            const btn = document.getElementById('modal-select-btn');
-            btn.onclick = () => toggleSelect(currentSwiperGirl.id, currentSwiperGirl.name);
-            btn.innerText = selected.includes(currentSwiperGirl.name) ? "Remove Selection" : "Select this Companion";
-            btn.className = selected.includes(currentSwiperGirl.name) ? "w-full py-4 rounded-xl bg-red-900/50 text-white border border-red-500 font-bold uppercase text-xs" : "gold-btn shadow-2xl";
-        }
-
-        function playVideo(url) {
-            const player = document.getElementById('player-source');
-            player.src = url;
-            document.getElementById('video-overlay').classList.remove('hidden');
-            player.play();
-        }
-
-        function closeVideo() {
-            const player = document.getElementById('player-source');
-            player.pause();
-            player.src = "";
-            document.getElementById('video-overlay').classList.add('hidden');
+            const sBtn = document.getElementById('modal-select-btn');
+            sBtn.onclick = () => toggleSelect(currentSwiperGirl.id, currentSwiperGirl.name);
+            sBtn.innerText = selected.includes(currentSwiperGirl.name) ? "Remove Selection" : "Select this Companion";
+            sBtn.className = selected.includes(currentSwiperGirl.name) ? "w-full py-4 rounded-xl bg-red-900/50 text-white border border-red-500 font-bold uppercase text-xs" : "gold-btn shadow-2xl";
         }
 
         function toggleSelect(id, name) {
-            if (selected.includes(name)) { selected = selected.filter(n => n !== name); }
-            else { if (selected.length >= 2) return; selected.push(name); }
-            closeProfile(); updateSelectionUI();
+            if (selected.includes(name)) {
+                selected = selected.filter(n => n !== name);
+            } else {
+                if (selected.length >= 2) {
+                    alert("จำกัดสูงสุด 2 ท่านต่อการจองครับ\nหากต้องการจองเพิ่ม กรุณาจองเซ็ตนี้ให้เสร็จก่อน แล้วจึงเริ่มจองใหม่อีกครั้ง");
+                    return;
+                }
+                selected.push(name);
+            }
+            closeProfile();
+            updateSelectionUI();
         }
 
         function updateSelectionUI() {
@@ -246,18 +276,39 @@
             document.getElementById('next-btn-container').classList.toggle('hidden', selected.length === 0);
         }
 
+        function playVideo(url) {
+            const p = document.getElementById('player-source');
+            p.src = url;
+            document.getElementById('video-overlay').classList.remove('hidden');
+            p.play();
+        }
+
+        function closeVideo() {
+            const p = document.getElementById('player-source');
+            p.pause(); p.src = "";
+            document.getElementById('video-overlay').classList.add('hidden');
+        }
+
         function closeProfile() { document.getElementById('profile-modal').classList.add('hidden'); }
         function goToForm() { document.getElementById('home-view').classList.add('hidden'); document.getElementById('form-view').classList.remove('hidden'); }
         function backToHome() { document.getElementById('form-view').classList.add('hidden'); document.getElementById('home-view').classList.remove('hidden'); }
 
-        async function confirmBooking() {
-            const date = document.getElementById('book-date').value, time = document.getElementById('book-time').value, course = document.getElementById('book-course').value;
+        function confirmBooking() {
+            const date = document.getElementById('book-date').value;
+            const time = document.getElementById('book-time').value;
+            const course = document.getElementById('book-course').value;
             const booked = document.querySelector('input[name="booked-yet"]:checked')?.value || "No";
-            if(!date || !time || !course) { alert("Please fill all details."); return; }
+
+            if(!date || !time || !course) { alert("กรุณากรอกข้อมูลให้ครบถ้วน"); return; }
             
-            const msg = encodeURIComponent(`📍 *NEW BOOKING*\n👯 Companions: ${selected.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Pre-booked Course: ${booked}`);
+            const msg = encodeURIComponent(`📍 *NEW BOOKING*\n👯 Companions: ${selected.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Pre-booked: ${booked}`);
+            
             window.location.href = `${LINE_LINK}?text=${msg}`;
+
+            // รีเซ็ตหน้าเว็บเพื่อรองรับการจองครั้งถัดไป
+            setTimeout(() => { window.location.reload(); }, 1500);
         }
     </script>
 </body>
 </html>
+
