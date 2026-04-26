@@ -1,164 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bangkok ParTee</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-body { background:#000; color:white; font-family:sans-serif; }
-.custom-input { background: rgba(255,255,255,0.05); border:1px solid rgba(212,175,55,0.3); }
-.selected-card { border:2px solid gold; }
-.hidden { display:none; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangkok ParTee - Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; margin: 0; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .custom-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.2); color: white; }
+        .custom-input:focus { border-color: #d4af37; outline: none; background: rgba(255,255,255,0.1); }
+        .selected-card { border: 3px solid #d4af37 !important; transform: scale(1.02); }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hidden { display: none; }
+    </style>
 </head>
+<body>
 
-<body class="p-6">
+<!-- BG -->
+<div class="fixed inset-0 z-0">
+    <img src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png" class="w-full h-full object-cover opacity-30">
+    <div class="absolute inset-0 bg-black/70"></div>
+</div>
 
 <!-- LOGIN -->
-<div id="login-view">
-    <input type="password" id="vip-password" placeholder="PASSWORD" class="custom-input p-3 w-full mb-3 text-center">
-    <button onclick="handleLogin(event)" class="bg-yellow-500 text-black p-3 w-full">Enter</button>
+<div id="login-view" class="relative z-20 min-h-screen flex items-center justify-center px-6">
+    <div class="w-full max-w-sm bg-black/80 backdrop-blur-xl p-10 rounded-[2.5rem] border border-[#d4af37]/30 text-center shadow-2xl">
+        <h2 class="text-[#d4af37] tracking-[0.2em] uppercase mb-8 font-serif text-sm">Member Access</h2>
+        <form onsubmit="handleLogin(event)">
+            <input type="password" id="vip-password" placeholder="PASSWORD" class="custom-input w-full text-center py-4 rounded-2xl mb-6 text-xs tracking-widest" required>
+            <button type="submit" class="w-full py-4 rounded-2xl bg-gradient-to-b from-[#e0c367] to-[#aa8529] text-black font-extrabold uppercase text-xs tracking-[0.2em]">Enter</button>
+        </form>
+    </div>
 </div>
 
 <!-- HOME -->
-<div id="home-view" class="hidden">
+<div id="home-view" class="hidden relative z-10 min-h-screen py-12 px-4 max-w-6xl mx-auto fade-in">
+    <div class="text-center mb-10">
+        <h1 class="text-3xl font-serif text-[#d4af37] tracking-widest uppercase">Bangkok ParTee</h1>
+        <p id="selection-count" class="text-neutral-400 text-[10px] tracking-[0.2em] uppercase mt-2">Selected: 0/2</p>
+    </div>
 
-<h1 class="text-xl mb-4 text-yellow-400">Select Companion</h1>
+    <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32"></div>
 
-<div id="main-gallery" class="grid grid-cols-2 gap-3"></div>
-
-<button onclick="goToForm()" class="bg-yellow-500 text-black p-3 w-full mt-4">
-Next
-</button>
-
+    <div id="next-btn-container" class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent flex justify-center hidden">
+        <button onclick="goToForm()" class="w-full max-w-md py-4 rounded-full bg-[#d4af37] text-black font-bold tracking-widest uppercase shadow-2xl">
+            Next Step
+        </button>
+    </div>
 </div>
 
 <!-- FORM -->
-<div id="form-view" class="hidden">
+<div id="form-view" class="hidden relative z-20 min-h-screen flex items-center justify-center px-6 fade-in">
+    <div class="w-full max-w-md bg-black/90 backdrop-blur-xl p-8 rounded-[2rem] border border-[#d4af37]/30 shadow-2xl">
+        <h2 class="text-[#d4af37] font-serif text-xl mb-6 text-center uppercase tracking-widest">Booking Details</h2>
 
-<input type="date" id="book-date" class="custom-input p-3 w-full mb-3">
-<input type="time" id="book-time" class="custom-input p-3 w-full mb-3">
-<input id="book-course" placeholder="Golf Course" class="custom-input p-3 w-full mb-3">
+        <input type="date" id="book-date" class="custom-input w-full p-4 rounded-xl mb-3">
+        <input type="time" id="book-time" class="custom-input w-full p-4 rounded-xl mb-3">
+        <input type="text" id="book-course" placeholder="Golf Course" class="custom-input w-full p-4 rounded-xl mb-3">
 
-<div class="mb-3">
-<label><input type="radio" name="booked-yet" value="Yes"> Yes</label>
-<label><input type="radio" name="booked-yet" value="No"> No</label>
-</div>
+        <div class="mb-4">
+            <label><input type="radio" name="booked-yet" value="Yes"> Yes</label>
+            <label><input type="radio" name="booked-yet" value="No"> No</label>
+        </div>
 
-<button onclick="sendToLine()" class="bg-yellow-500 text-black p-3 w-full">
-Confirm Booking
-</button>
-
+        <button onclick="sendToLine()" class="w-full py-4 rounded-xl bg-[#d4af37] text-black font-bold">
+            Confirm & Send LINE
+        </button>
+    </div>
 </div>
 
 <script>
-// 🔐 LOGIN
-const ENCODED_PASS = "VklQ"; // VIP
+const ENCODED_PASS = "VklQ";
+const LINE_ID = "@YOUR_ID";
 
-function handleLogin(e){
-    const input = document.getElementById('vip-password').value.toUpperCase();
-    if(btoa(input) === ENCODED_PASS){
-        document.getElementById('login-view').classList.add('hidden');
-        document.getElementById('home-view').classList.remove('hidden');
-        renderGallery();
-    } else {
-        alert("Wrong password");
-    }
-}
-
-// 👯 COMPANIONS
+// 🔥 เพิ่มราคา
 const companions = [
- {id:1,name:"Mochi"},
- {id:2,name:"Nana"},
- {id:3,name:"Yuki"},
- {id:4,name:"Sora"}
+ {id:1,name:"Mochi",price:"5,000 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"},
+ {id:2,name:"Nana",price:"5,500 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"},
+ {id:3,name:"Yuki",price:"6,000 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"},
+ {id:4,name:"Sora",price:"6,500 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"}
 ];
 
 let selectedIds = [];
 
+function handleLogin(e){
+ e.preventDefault();
+ if(btoa(document.getElementById('vip-password').value.toUpperCase())===ENCODED_PASS){
+  document.getElementById('login-view').classList.add('hidden');
+  document.getElementById('home-view').classList.remove('hidden');
+  renderGallery();
+ }
+}
+
 function renderGallery(){
-    const el = document.getElementById('main-gallery');
-    el.innerHTML = companions.map(p=>`
-        <div onclick="toggleSelect(${p.id},'${p.name}')" id="c${p.id}" class="p-4 border">
-            ${p.name}
-        </div>
-    `).join('');
+ const el=document.getElementById('main-gallery');
+ el.innerHTML=companions.map(p=>`
+  <div id="card-${p.id}" onclick="toggleSelect(${p.id},'${p.name}')" class="cursor-pointer">
+   <div class="rounded-xl overflow-hidden">
+    <img src="${p.cover}" class="w-full h-48 object-cover">
+   </div>
+   <p class="text-center mt-2 text-[#d4af37]">${p.name}</p>
+   <p class="text-center text-xs text-neutral-400">${p.price}</p>
+  </div>
+ `).join('');
 }
 
 function toggleSelect(id,name){
-    if(selectedIds.includes(name)){
-        selectedIds = selectedIds.filter(x=>x!==name);
-        document.getElementById("c"+id).classList.remove("selected-card");
-    } else {
-        if(selectedIds.length>=2){
-            alert("เลือกได้ 2 คน");
-            return;
-        }
-        selectedIds.push(name);
-        document.getElementById("c"+id).classList.add("selected-card");
-    }
+ const el=document.getElementById(`card-${id}`);
+ if(selectedIds.includes(name)){
+  selectedIds=selectedIds.filter(x=>x!==name);
+  el.classList.remove("selected-card");
+ }else{
+  if(selectedIds.length>=2){alert("เลือกได้ 2 คน");return;}
+  selectedIds.push(name);
+  el.classList.add("selected-card");
+ }
+ document.getElementById('selection-count').innerText=`Selected: ${selectedIds.length}/2`;
+ document.getElementById('next-btn-container').classList.toggle('hidden',selectedIds.length===0);
 }
 
-// ➡️ FORM
 function goToForm(){
-    if(selectedIds.length===0){
-        alert("เลือกก่อน");
-        return;
-    }
-    document.getElementById('home-view').classList.add('hidden');
-    document.getElementById('form-view').classList.remove('hidden');
+ document.getElementById('home-view').classList.add('hidden');
+ document.getElementById('form-view').classList.remove('hidden');
 }
 
-// 🔥 FINAL FUNCTION
 async function sendToLine(){
+ const date=document.getElementById('book-date').value;
+ const time=document.getElementById('book-time').value;
+ const course=document.getElementById('book-course').value;
+ const bookedYet=document.querySelector('input[name="booked-yet"]:checked')?.value||"No";
 
-    const date = document.getElementById('book-date').value;
-    const time = document.getElementById('book-time').value;
-    const course = document.getElementById('book-course').value;
-    const bookedYet = document.querySelector('input[name="booked-yet"]:checked')?.value || "Not specified";
+ if(!date||!time||!course){alert("กรอกให้ครบ");return;}
 
-    if(!date || !time || !course){
-        alert("กรอกให้ครบ");
-        return;
-    }
+ const data={name:selectedIds.join(", "),date,time,course,bookedYet};
 
-    const data = {
-        name: selectedIds.join(", "),
-        date,
-        time,
-        course,
-        bookedYet
-    };
+ // 🔥 Google Sheet
+ await fetch("https://script.google.com/macros/s/AKfycbyp2jwgxLIPXO4fI-sQNVa5-4DbEkVzwhp6TB4bnFctBA4VnBiJgVIsgkavTPA5pbYm/exec",{
+  method:"POST",
+  body:JSON.stringify(data)
+ });
 
-    // 🔥 SEND TO GOOGLE SHEET
-    await fetch("https://script.google.com/macros/s/AKfycbyp2jwgxLIPXO4fI-sQNVa5-4DbEkVzwhp6TB4bnFctBA4VnBiJgVIsgkavTPA5pbYm/exec", {
-        method: "POST",
-        body: JSON.stringify(data)
-    });
-
-    // 🔥 LINE MESSAGE
-    const message = encodeURIComponent(
-        `📍 Bangkok ParTee Booking\n` +
-        `👯 ${data.name}\n` +
-        `📅 ${date}\n` +
-        `⏰ ${time}\n` +
-        `⛳ ${course}\n` +
-        `✅ ${bookedYet}`
-    );
-
-    const lineDirect = `https://line.me/R/ti/p/@YOUR_ID?text=${message}`;
-    const lineAdd = "https://lin.ee/p8PCYIi";
-
-    alert("กำลังเปิด LINE...");
-
-    window.open(lineDirect, "_blank");
-
-    setTimeout(()=>{
-        window.location.href = lineAdd;
-    },1500);
+ // 🔥 LINE
+ const msg=encodeURIComponent(
+  `📍 Bangkok ParTee Booking\n👯 ${data.name}\n📅 ${date}\n⏰ ${time}\n⛳ ${course}`
+ );
+ window.location.href=`https://line.me/R/ti/p/${LINE_ID}?text=${msg}`;
 }
 </script>
 
