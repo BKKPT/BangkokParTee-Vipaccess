@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bangkok ParTee - Private Access</title>
     
@@ -14,7 +13,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
         
-        /* 2. Security: Disable text selection */
         body, html { 
             margin: 0; padding: 0; background: #000; color: white; 
             font-family: 'Inter', sans-serif; overflow-x: hidden;
@@ -56,7 +54,6 @@
             align-content: space-around; transform: rotate(-30deg);
         }
 
-        /* Profile Info Box */
         .info-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.1); padding: 8px; border-radius: 10px; }
         .info-label { font-size: 9px; color: #d4af37; text-transform: uppercase; letter-spacing: 0.5px; }
         .info-value { font-size: 11px; color: #fff; font-weight: 500; }
@@ -94,13 +91,10 @@
     <div id="intro-view" class="hidden relative z-[100] min-h-screen flex items-center justify-center px-6 py-10">
         <div class="glass-card w-full max-w-md p-8 overflow-y-auto max-h-[90vh] shadow-2xl">
             <h2 class="text-[#d4af37] font-serif text-center text-xl mb-6 uppercase tracking-widest">Service Guidelines</h2>
-            <div class="bg-black/40 p-5 rounded-2xl border border-[#d4af37]/20 mb-6">
-                <ul class="text-[10px] space-y-3 text-neutral-300">
-                    <li>🔹 <strong>Group Size:</strong> Max 2 companions per reservation.</li>
-                    <li>🔹 <strong>Additional Requests:</strong> For more than 2 companions, please complete separate bookings.</li>
-                    <li>🔹 <strong>Rescheduling:</strong> Free with 48-hour notice.</li>
-                    <li>🔹 <strong>Privacy:</strong> No photography/recording during service.</li>
-                </ul>
+            <div class="bg-black/40 p-5 rounded-2xl border border-[#d4af37]/20 mb-6 text-[10px] space-y-3 text-neutral-300">
+                <p>🔹 <strong>Group Size:</strong> Max 2 companions per reservation.</p>
+                <p>🔹 <strong>Additional Requests:</strong> For more than 2 companions, please complete separate bookings.</p>
+                <p>🔹 <strong>Rescheduling:</strong> Free with 48-hour notice.</p>
             </div>
             <button onclick="startGallery()" class="gold-btn shadow-lg">Acknowledge & Browse</button>
         </div>
@@ -113,7 +107,6 @@
             <p id="selection-count" class="text-neutral-500 text-[10px] mt-2 uppercase tracking-widest">Selected: 0/2</p>
         </div>
         <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32"></div>
-        
         <div id="next-btn-container" class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent flex justify-center hidden z-[200]">
             <button onclick="goToForm()" class="w-full max-w-md py-4 rounded-full bg-[#d4af37] text-black font-bold tracking-widest uppercase shadow-2xl">Confirm Selection</button>
         </div>
@@ -125,7 +118,6 @@
             <div class="swiper-wrapper" id="modal-slides"></div>
             <div class="swiper-pagination"></div>
         </div>
-        
         <div class="p-6 bg-gradient-to-t from-black via-black/95 to-transparent">
             <div id="profile-info-content" class="mb-6"></div>
             <button id="modal-video-btn" class="hidden video-btn">🎬 Watch Preview Video</button>
@@ -196,30 +188,30 @@
                 cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
                 photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
                 video: null
-         },
-            { id: "BPC26003",
-        name: "Nune 🩷26  H160/W46  34-25-35", 
-        golfScore: "⛳ 95-105", "Freelance Model", 
-        language: "Eng- Good Conversation , Thai",
-        drink: "Social Drinker",
-        workDays: "Mon, Tue, Wed, Sat, Sun",
-        character: "Friendly & High Energy … I'm better at drinking than putting! 🍸 Golf is my passion, but fun is my mission. My score isn't great, but I'm a Pro at making you smile ",
-        shift: " Night Golf",
-        cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
+            },
+            { 
+                id: "BPC26003",
+                name: "Nune 🩷26 H160/W46 34-25-35", 
+                price: "6,500 THB",
+                golfScore: "95-105", 
+                language: "Eng- Good Conversation , Thai",
+                drink: "Social Drinker",
+                workDays: "Mon, Tue, Wed, Sat, Sun",
+                character: "Freelance Model | Friendly & High Energy … I'm better at drinking than putting! 🍸 Golf is my passion, but fun is my mission. My score isn't great, but I'm a Pro at making you smile.",
+                shift: "Night Golf",
+                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
                 photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
                 video: null
-    }
+            }
         ];
 
         let selected = [], currentSwiperGirl = null, swiper;
 
-        // --- Security Features ---
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = e => { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
         window.addEventListener('blur', () => document.body.style.filter = 'blur(15px)');
         window.addEventListener('focus', () => document.body.style.filter = 'none');
 
-        // --- Navigation Logic ---
         function handleLogin(e) {
             e.preventDefault();
             const id = document.getElementById('user-id').value.toUpperCase().trim();
@@ -248,7 +240,6 @@
             updateSelectionUI();
         }
 
-        // --- Modal Logic ---
         function openProfile(id) {
             currentSwiperGirl = companions.find(c => c.id === id);
             const slides = currentSwiperGirl.photos.map(p => `<div class="swiper-slide"><img src="${p}" class="w-full h-full object-cover"></div>`).join('');
@@ -285,12 +276,11 @@
             sBtn.className = selected.includes(currentSwiperGirl.name) ? "w-full py-4 rounded-xl bg-red-900/50 text-white border border-red-500 font-bold uppercase text-xs" : "gold-btn shadow-2xl";
         }
 
-        // --- Selection Logic ---
         function toggleSelect(name) {
             if (selected.includes(name)) { selected = selected.filter(n => n !== name); } 
             else {
                 if (selected.length >= 2) { 
-                    alert("Maximum 2 companions allowed per reservation.\nFor more companions, please complete this booking first."); 
+                    alert("Maximum 2 companions allowed per reservation."); 
                     return; 
                 }
                 selected.push(name);
@@ -307,7 +297,6 @@
             document.getElementById('next-btn-container').classList.toggle('hidden', selected.length === 0);
         }
 
-        // --- Video Player Logic ---
         function playVideo(url) {
             const p = document.getElementById('player-source');
             p.src = url;
@@ -320,17 +309,14 @@
             document.getElementById('video-overlay').classList.add('hidden');
         }
 
-        // --- Navigation Helpers ---
         function closeProfile() { document.getElementById('profile-modal').classList.add('hidden'); }
         function goToForm() { document.getElementById('home-view').classList.add('hidden'); document.getElementById('form-view').classList.remove('hidden'); }
         function backToHome() { document.getElementById('form-view').classList.add('hidden'); document.getElementById('home-view').classList.remove('hidden'); }
 
-        // --- Final Booking ---
         function confirmBooking() {
             const date = document.getElementById('book-date').value, time = document.getElementById('book-time').value, course = document.getElementById('book-course').value;
             const booked = document.querySelector('input[name="booked-yet"]:checked')?.value || "No";
             if(!date || !time || !course) { alert("Please complete all reservation fields."); return; }
-            
             const msg = encodeURIComponent(`📍 *NEW RESERVATION*\n👯 Companions: ${selected.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Pre-booked: ${booked}`);
             window.location.href = `${LINE_LINK}?text=${msg}`;
             setTimeout(() => { window.location.reload(); }, 1500);
