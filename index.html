@@ -1,147 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bangkok ParTee - Elite Gallery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: white; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .swiper { width: 100%; height: 100%; }
-        .swiper-slide { display: flex; align-items: center; justify-content: center; background: #000; }
-        .swiper-pagination-bullet { background: #d4af37 !important; }
-        .fade-in { animation: fadeIn 0.4s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        /* ซ่อน Modal ตอนเริ่มต้น */
-        #profile-modal { display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bangkok ParTee</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body { background:#000; color:white; font-family:sans-serif; }
+.custom-input { background: rgba(255,255,255,0.05); border:1px solid rgba(212,175,55,0.3); }
+.selected-card { border:2px solid gold; }
+.hidden { display:none; }
+</style>
 </head>
-<body>
 
-    <div id="login-view" class="relative z-20 w-full min-h-screen flex flex-col items-center justify-center px-6">
-        <div class="w-full max-w-sm bg-black/60 backdrop-blur-xl p-8 rounded-[2rem] border border-[#d4af37]/30 text-center">
-            <h2 class="text-[#d4af37] tracking-[0.2em] uppercase mb-8 font-serif">Member Access</h2>
-            <form onsubmit="handleLogin(event)">
-                <input type="password" id="vip-password" placeholder="PASSWORD" class="w-full bg-white/5 border border-white/10 text-center py-4 rounded-xl mb-6 text-white outline-none focus:border-[#d4af37]" required>
-                <button type="submit" class="w-full py-4 rounded-xl bg-[#d4af37] text-black font-bold uppercase text-xs tracking-widest">Enter</button>
-            </form>
+<body class="p-6">
+
+<!-- LOGIN -->
+<div id="login-view">
+    <input type="password" id="vip-password" placeholder="PASSWORD" class="custom-input p-3 w-full mb-3 text-center">
+    <button onclick="handleLogin(event)" class="bg-yellow-500 text-black p-3 w-full">Enter</button>
+</div>
+
+<!-- HOME -->
+<div id="home-view" class="hidden">
+
+<h1 class="text-xl mb-4 text-yellow-400">Select Companion</h1>
+
+<div id="main-gallery" class="grid grid-cols-2 gap-3"></div>
+
+<button onclick="goToForm()" class="bg-yellow-500 text-black p-3 w-full mt-4">
+Next
+</button>
+
+</div>
+
+<!-- FORM -->
+<div id="form-view" class="hidden">
+
+<input type="date" id="book-date" class="custom-input p-3 w-full mb-3">
+<input type="time" id="book-time" class="custom-input p-3 w-full mb-3">
+<input id="book-course" placeholder="Golf Course" class="custom-input p-3 w-full mb-3">
+
+<div class="mb-3">
+<label><input type="radio" name="booked-yet" value="Yes"> Yes</label>
+<label><input type="radio" name="booked-yet" value="No"> No</label>
+</div>
+
+<button onclick="sendToLine()" class="bg-yellow-500 text-black p-3 w-full">
+Confirm Booking
+</button>
+
+</div>
+
+<script>
+// 🔐 LOGIN
+const ENCODED_PASS = "VklQ"; // VIP
+
+function handleLogin(e){
+    const input = document.getElementById('vip-password').value.toUpperCase();
+    if(btoa(input) === ENCODED_PASS){
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('home-view').classList.remove('hidden');
+        renderGallery();
+    } else {
+        alert("Wrong password");
+    }
+}
+
+// 👯 COMPANIONS
+const companions = [
+ {id:1,name:"Mochi"},
+ {id:2,name:"Nana"},
+ {id:3,name:"Yuki"},
+ {id:4,name:"Sora"}
+];
+
+let selectedIds = [];
+
+function renderGallery(){
+    const el = document.getElementById('main-gallery');
+    el.innerHTML = companions.map(p=>`
+        <div onclick="toggleSelect(${p.id},'${p.name}')" id="c${p.id}" class="p-4 border">
+            ${p.name}
         </div>
-    </div>
+    `).join('');
+}
 
-    <div id="home-view" class="hidden relative z-10 w-full min-h-screen flex flex-col py-12 px-4 max-w-6xl mx-auto fade-in">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-serif text-[#d4af37] tracking-widest uppercase">Bangkok ParTee</h1>
-            <p class="text-neutral-500 text-[10px] tracking-[0.4em] uppercase">Select your companion</p>
-        </div>
-
-        <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            </div>
-    </div>
-
-    <div id="profile-modal" class="fixed inset-0 z-50 bg-black flex flex-col fade-in">
-        <button onclick="closeProfile()" class="absolute top-6 right-6 z-[60] bg-white/10 w-10 h-10 rounded-full flex items-center justify-center text-white text-2xl">&times;</button>
-        
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper" id="modal-slides">
-                </div>
-            <div class="swiper-pagination"></div>
-        </div>
-
-        <div class="absolute bottom-8 left-0 w-full px-6 z-[60]">
-            <button onclick="window.location.href='https://line.me/ti/p/@yourid'" class="w-full py-4 rounded-full bg-[#d4af37] text-black font-bold tracking-widest uppercase shadow-lg">BOOK NOW</button>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-    <script>
-        const ENCODED_PASS = "VklQ"; 
-
-        // --- 🟢 จัดการข้อมูลตรงนี้ (1 คน มีได้หลายรูป/หลายหน้า) 🟢 ---
-        const companions = [
-            {
-                id: 1,
-                name: "Mochi",
-                cover: "https://raw.githubusercontent.com/User/Repo/main/mochi_cover.jpg",
-                // ข้อมูลสำหรับสไลด์ 3-4 หน้า
-                slides: [
-                    { type: 'image', content: "https://raw.githubusercontent.com/User/Repo/main/mochi_1.jpg" },
-                    { type: 'info', title: "Personal Details", detail: "Age: 23 | Height: 165 cm | Weight: 48 kg | B: 34 W: 24 H: 35" },
-                    { type: 'info', title: "Languages", detail: "Thai: Native | English: Fluent | Japanese: Basic" },
-                    { type: 'image', content: "https://raw.githubusercontent.com/User/Repo/main/mochi_2.jpg" }
-                ]
-            },
-            {
-                id: 2,
-                name: "Nana",
-                cover: "https://raw.githubusercontent.com/User/Repo/main/nana_cover.jpg",
-                slides: [
-                    { type: 'image', content: "https://raw.githubusercontent.com/User/Repo/main/nana_1.jpg" },
-                    { type: 'info', title: "Profile", detail: "Age: 21 | Height: 160 cm | Model & Golfer" },
-                    { type: 'info', title: "Experience", detail: "5 years in Golf Industry" }
-                ]
-            }
-        ];
-
-        // ระบบ Login
-        function handleLogin(event) {
-            event.preventDefault();
-            if(btoa(document.getElementById('vip-password').value.toUpperCase()) === ENCODED_PASS) {
-                document.getElementById('login-view').classList.add('hidden');
-                document.getElementById('home-view').classList.remove('hidden');
-                renderMainGallery();
-            }
+function toggleSelect(id,name){
+    if(selectedIds.includes(name)){
+        selectedIds = selectedIds.filter(x=>x!==name);
+        document.getElementById("c"+id).classList.remove("selected-card");
+    } else {
+        if(selectedIds.length>=2){
+            alert("เลือกได้ 2 คน");
+            return;
         }
+        selectedIds.push(name);
+        document.getElementById("c"+id).classList.add("selected-card");
+    }
+}
 
-        // แสดงรายชื่อสาวๆ หน้าแรก
-        function renderMainGallery() {
-            const container = document.getElementById('main-gallery');
-            container.innerHTML = companions.map(person => `
-                <div onclick="openProfile(${person.id})" class="cursor-pointer group">
-                    <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-800 mb-2 border border-white/5">
-                        <img src="${person.cover}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <h3 class="text-center text-[#d4af37] font-serif text-lg">${person.name}</h3>
-                </div>
-            `).join('');
-        }
+// ➡️ FORM
+function goToForm(){
+    if(selectedIds.length===0){
+        alert("เลือกก่อน");
+        return;
+    }
+    document.getElementById('home-view').classList.add('hidden');
+    document.getElementById('form-view').classList.remove('hidden');
+}
 
-        let swiper; // ตัวแปรเก็บค่า Swiper
+// 🔥 FINAL FUNCTION
+async function sendToLine(){
 
-        // เปิดดูโปรไฟล์สไลด์ 3-4 หน้า
-        function openProfile(id) {
-            const person = companions.find(p => p.id === id);
-            const slideContainer = document.getElementById('modal-slides');
-            
-            // สร้างสไลด์ตามข้อมูลที่กรอกไว้
-            slideContainer.innerHTML = person.slides.map(s => {
-                if(s.type === 'image') {
-                    return `<div class="swiper-slide"><img src="${s.content}" class="w-full h-full object-cover"></div>`;
-                } else {
-                    return `
-                        <div class="swiper-slide p-10 flex flex-col justify-center items-center text-center">
-                            <h2 class="text-[#d4af37] font-serif text-2xl mb-4">${s.title}</h2>
-                            <p class="text-lg text-neutral-300 leading-relaxed">${s.detail}</p>
-                        </div>
-                    `;
-                }
-            }).join('');
+    const date = document.getElementById('book-date').value;
+    const time = document.getElementById('book-time').value;
+    const course = document.getElementById('book-course').value;
+    const bookedYet = document.querySelector('input[name="booked-yet"]:checked')?.value || "Not specified";
 
-            document.getElementById('profile-modal').style.display = 'flex';
-            
-            // เริ่มต้น Swiper
-            if (swiper) swiper.destroy(); 
-            swiper = new Swiper(".mySwiper", {
-                pagination: { el: ".swiper-pagination", clickable: true },
-            });
-        }
+    if(!date || !time || !course){
+        alert("กรอกให้ครบ");
+        return;
+    }
 
-        function closeProfile() {
-            document.getElementById('profile-modal').style.display = 'none';
-        }
-    </script>
+    const data = {
+        name: selectedIds.join(", "),
+        date,
+        time,
+        course,
+        bookedYet
+    };
+
+    // 🔥 SEND TO GOOGLE SHEET
+    await fetch("https://script.google.com/macros/s/AKfycbyp2jwgxLIPXO4fI-sQNVa5-4DbEkVzwhp6TB4bnFctBA4VnBiJgVIsgkavTPA5pbYm/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+    });
+
+    // 🔥 LINE MESSAGE
+    const message = encodeURIComponent(
+        `📍 Bangkok ParTee Booking\n` +
+        `👯 ${data.name}\n` +
+        `📅 ${date}\n` +
+        `⏰ ${time}\n` +
+        `⛳ ${course}\n` +
+        `✅ ${bookedYet}`
+    );
+
+    const lineDirect = `https://line.me/R/ti/p/@YOUR_ID?text=${message}`;
+    const lineAdd = "https://lin.ee/p8PCYIi";
+
+    alert("กำลังเปิด LINE...");
+
+    window.open(lineDirect, "_blank");
+
+    setTimeout(()=>{
+        window.location.href = lineAdd;
+    },1500);
+}
+</script>
+
 </body>
 </html>
