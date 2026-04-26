@@ -151,37 +151,41 @@
     <script>
         const VALID_ID = "VPB1001", VALID_PASS = "V1234", LINE_LINK = "https://lin.ee/wIkQHc5F";
 
-        const companions = [
-            {
-                id: BPC26001T, 
-                name: "SNOW H160/W49 32/25/27", 
-                price: "6,500 THB",
-                golfScore: "105-109",
-                language: "ENG- Good Conversation, Thai",
-                drink: "Social Drinker",
-                character: "Friendly & Calm & Elegant.. Focused on growth, good energy, and meaningful connections—golf just happens to be my favorite place for all three.",
-                workDays: "Mon - Sat",
-                shift: "Day Golf & Morning Tee",
-                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
-                photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg"],"images/Snow109/IMG_0116.jpeg","images/Snow109/LINE_NOTE_260426_2.jpg",
-                video: "798745786.161923.mp4"
-            },
-            {
-                id: BPC26002T, 
-                name: "Princess H163/W48 33-24-35", 
-                price: "6,500 THB",
-                golfScore: "105-109",
-                language: "English, Japanese",
-                drink: "Social Drinker",
-                character: "Friendly & Active Entertainer .. Cheerful, easygoing, and fun to be around ⛳ Relaxed vibes, friendly, and always on time.Let’s enjoy a great round together 😊",
-                workDays: "Everyday",
-                shift: "Day Golf only",
-                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
-                photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
-                video: null
-            }
-        ];
-
+       const companions = [
+    {
+        id: "BPC26001T", 
+        name: "SNOW H160/W49 32/25/27", 
+        price: "6,500 THB",
+        golfScore: "105-109",
+        language: "ENG- Good Conversation, Thai",
+        drink: "Social Drinker",
+        character: "Friendly & Calm & Elegant.. Focused on growth, good energy, and meaningful connections—golf just happens to be my favorite place for all three.",
+        workDays: "Mon - Sat",
+        shift: "Day Golf & Morning Tee",
+        cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
+        photos: [
+            "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260421_6.jpg",
+            "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/IMG_0116.jpeg",
+            "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/LINE_NOTE_260426_2.jpg"
+        ],
+        video: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/Snow109/798745786.161923.mp4" 
+        // หมายเหตุ: ตรงวิดีโอ ผมเติม path เต็มให้ด้วยเพื่อให้มันเล่นได้นะครับ
+    },
+    {
+        id: "BPC26002T", 
+        name: "Princess H163/W48 33-24-35", 
+        price: "6,500 THB",
+        golfScore: "105-109",
+        language: "English, Japanese",
+        drink: "Social Drinker",
+        character: "Friendly & Active Entertainer .. Cheerful, easygoing, and fun to be around ⛳ Relaxed vibes, friendly, and always on time.Let’s enjoy a great round together 😊",
+        workDays: "Everyday",
+        shift: "Day Golf only",
+        cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
+        photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
+        video: null
+    }
+];
         let selected = [], currentSwiperGirl = null, swiper;
 
         // Security
