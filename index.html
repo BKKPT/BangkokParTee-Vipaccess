@@ -2,190 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bangkok ParTee - VIP Access</title>
-    <script src="[https://cdn.tailwindcss.com"></script]https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; margin: 0; overflow-x: hidden; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-       
-        /* สไตล์ช่องกรอกข้อมูล */
-        .custom-input {
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            color: white;
-        }
-        .custom-input:focus { border-color: #d4af37; outline: none; background: rgba(0, 0, 0, 0.9); }
-       
-        /* กล่อง Login ลอยเด่น */
-        .login-card {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+        
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            font-family: 'Inter', sans-serif; background-color: #000;
+            overflow: hidden; /* กันหน้าจอสั่นหรือเลื่อน */
         }
 
-        .selected-card { border: 4px solid #d4af37 !important; transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .hidden { display: none; }
+        /* พื้นหลังชัดเจน 100% */
+        .bg-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+        .bg-container img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* กล่อง Login ล็อกให้อยู่กลางจอเสมอ */
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            align-items: center; /* จัดกลางแนวตั้ง */
+            justify-content: center; /* จัดกลางแนวนอน */
+            z-index: 10;
+            padding: 24px;
+        }
+
+        .login-card {
+            background: rgba(0, 0, 0, 0.75); /* ความทึบของกล่อง */
+            backdrop-filter: blur(10px); /* เอฟเฟกต์กระจกฝ้า */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 2rem;
+            width: 100%;
+            max-width: 340px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 16px;
+            outline: none;
+            font-size: 14px;
+        }
+        .custom-input:focus { border-color: #d4af37; background: rgba(255, 255, 255, 0.1); }
+
+        .btn-gold {
+            background: linear-gradient(to bottom, #e0c367, #aa8529);
+            color: black;
+            font-weight: 800;
+            text-transform: uppercase;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(170, 133, 41, 0.4);
+        }
+        
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="fixed inset-0 z-0">
-    <img src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"
-         class="w-full h-full object-cover object-center opacity-100">
-    <div id="main-overlay" class="absolute inset-0 bg-black/40 transition-all duration-700"></div>
-</div>
-
-<div id="login-view" class="relative z-20 min-h-screen flex items-center justify-center px-6 fade-in">
-    <div class="login-card w-full max-w-sm p-10 rounded-[2.5rem] text-center shadow-2xl">
-        <h2 class="text-[#d4af37] tracking-[0.3em] uppercase font-serif text-sm mb-8">VIP Member Access</h2>
-        <form onsubmit="handleLogin(event)" class="space-y-4">
-            <div class="text-left">
-                <label class="text-[9px] text-[#d4af37] uppercase tracking-widest ml-2 mb-1 block">User ID</label>
-                <input type="text" id="member-id" placeholder="VPBXXXX" class="custom-input w-full text-center py-4 rounded-2xl text-xs tracking-widest uppercase font-bold" required>
-            </div>
-            <div class="text-left">
-                <label class="text-[9px] text-[#d4af37] uppercase tracking-widest ml-2 mb-1 block">Password</label>
-                <input type="password" id="vip-password" placeholder="••••••••" class="custom-input w-full text-center py-4 rounded-2xl text-xs tracking-widest" required>
-            </div>
-            <button type="submit" class="w-full py-4 mt-4 rounded-2xl bg-gradient-to-b from-[#e0c367] to-[#aa8529] text-black font-extrabold uppercase text-xs tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-95 transition-all">
-                Enter
-            </button>
-        </form>
-        <p id="login-error" class="text-red-500 text-[10px] mt-6 hidden uppercase tracking-widest font-bold">Invalid ID or Password</p>
-    </div>
-</div>
-
-<div id="home-view" class="hidden relative z-10 min-h-screen py-12 px-4 max-w-6xl mx-auto fade-in">
-    <div class="text-center mb-10">
-        <h1 class="text-3xl font-serif text-[#d4af37] tracking-widest uppercase">Bangkok ParTee</h1>
-        <p id="selection-count" class="text-neutral-300 text-[10px] tracking-[0.2em] uppercase mt-2">Selected: 0/2</p>
+    <div class="bg-container">
+        <img src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png" alt="Cover Image">
     </div>
 
-    <div id="main-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32"></div>
-
-    <div id="next-btn-container" class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent flex justify-center hidden">
-        <button onclick="goToForm()" class="w-full max-w-md py-4 rounded-full bg-[#d4af37] text-black font-bold tracking-widest uppercase shadow-2xl transition-all">
-            Next Step
-        </button>
-    </div>
-</div>
-
-<div id="form-view" class="hidden relative z-20 min-h-screen flex items-center justify-center px-6 fade-in">
-    <div class="login-card w-full max-w-md p-8 rounded-[2.5rem] shadow-2xl border border-[#d4af37]/30">
-        <h2 class="text-[#d4af37] font-serif text-xl mb-6 text-center uppercase tracking-widest">Booking Details</h2>
-        <div class="space-y-4 text-left">
-            <input type="date" id="book-date" class="custom-input w-full p-4 rounded-xl text-sm">
-            <input type="time" id="book-time" class="custom-input w-full p-4 rounded-xl text-sm">
-            <input type="text" id="book-course" placeholder="Golf Course Name" class="custom-input w-full p-4 rounded-xl text-sm">
-           
-            <div class="py-2 border-t border-white/10 mt-2">
-                <p class="text-[10px] text-[#d4af37] mb-3 uppercase tracking-widest text-center">จองสนามแล้วหรือยัง?</p>
-                <div class="flex justify-center gap-10">
-                    <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="Yes" class="accent-[#d4af37]"> Yes</label>
-                    <label class="text-xs flex items-center gap-2 cursor-pointer"><input type="radio" name="booked-yet" value="No" class="accent-[#d4af37]"> No</label>
-                </div>
-            </div>
-           
-            <p class="text-[9px] text-neutral-400 italic text-center leading-relaxed">
-                * บริการประสานงานจองเวลาและแคดดี้ ค่าบริการ 300 บาท
-            </p>
-
-            <button onclick="sendToLine()" class="w-full py-4 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#aa8529] text-black font-bold uppercase tracking-widest text-xs shadow-lg">
-                Confirm & Send LINE
-            </button>
-            <button onclick="backToSelection()" class="w-full text-[10px] text-neutral-500 uppercase mt-4 text-center block">Back to Edit</button>
+    <div id="login-view" class="login-overlay fade-in">
+        <div class="login-card">
+            <h2 style="color: #d4af37; letter-spacing: 4px; text-transform: uppercase; font-size: 14px; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Member Access</h2>
+            
+            <form onsubmit="handleLogin(event)">
+                <input type="text" id="member-id" placeholder="USER ID" class="custom-input uppercase" required>
+                <input type="password" id="vip-password" placeholder="PASSWORD" class="custom-input" required>
+                
+                <button type="submit" class="btn-gold">Enter</button>
+            </form>
+            
+            <p id="error-txt" class="hidden" style="color: #ff5555; font-size: 10px; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px;">Invalid ID or Password</p>
         </div>
     </div>
-</div>
 
-<script>
-// --- ⚙️ ตั้งค่าตามที่คุณกำหนด ⚙️ ---
-const VALID_USER_ID = "VPB1001";
-const VALID_PASS = "V1234";
-const LINE_URL = "https://lin.ee/wIkQHc5F";
-
-const companions = [
- {id:1,name:"Mochi",price:"5,000 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"},
- {id:2,name:"Nana",price:"5,500 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"},
- {id:3,name:"Yuki",price:"6,000 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"},
- {id:4,name:"Sora",price:"6,500 THB",cover:"https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"}
-];
-
-let selectedNames = [];
-
-function handleLogin(e){
-    e.preventDefault();
-    const idInput = document.getElementById('member-id').value.toUpperCase();
-    const passInput = document.getElementById('vip-password').value;
-    const errorEl = document.getElementById('login-error');
-
-    // ตรวจสอบทั้ง ID และ Password ตามที่คุณสั่ง
-    if(idInput === VALID_USER_ID && passInput === VALID_PASS) {
-        document.getElementById('login-view').classList.add('hidden');
-        document.getElementById('home-view').classList.remove('hidden');
-        document.getElementById('main-overlay').classList.replace('bg-black/40', 'bg-black/80');
-        renderGallery();
-    } else {
-        errorEl.classList.remove('hidden');
-        setTimeout(() => errorEl.classList.add('hidden'), 3000);
-    }
-}
-
-function renderGallery(){
-    const el = document.getElementById('main-gallery');
-    el.innerHTML = companions.map(p => `
-        <div id="card-${p.id}" onclick="toggleSelect(${p.id},'${p.name}')" class="cursor-pointer group">
-            <div class="rounded-2xl overflow-hidden border border-white/10 card-frame bg-zinc-900 transition-all duration-300">
-                <img src="${p.cover}" class="w-full h-48 object-cover">
-            </div>
-            <p class="text-center mt-3 text-[#d4af37] font-bold text-xs uppercase tracking-wider">${p.name}</p>
-            <p class="text-center text-[10px] text-neutral-400">${p.price}</p>
+    <div id="home-view" class="hidden" style="position: relative; z-index: 20; padding-top: 60px;">
+        <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: -1;"></div>
+        <h1 style="text-align: center; color: #d4af37; letter-spacing: 5px; text-transform: uppercase; font-family: 'Playfair Display', serif;">Bangkok ParTee</h1>
+        <p style="text-align: center; color: #888; font-size: 10px; letter-spacing: 2px;">SUCCESSFULLY LOGGED IN</p>
         </div>
-    `).join('');
-}
 
-function toggleSelect(id, name){
-    const el = document.getElementById(`card-${id}`).querySelector('.card-frame');
-    if(selectedNames.includes(name)){
-        selectedNames = selectedNames.filter(x => x !== name);
-        el.classList.remove("selected-card");
-    } else {
-        if(selectedNames.length >= 2){ alert("เลือกได้สูงสุด 2 คนค่ะ"); return; }
-        selectedNames.push(name);
-        el.classList.add("selected-card");
-    }
-    document.getElementById('selection-count').innerText = `Selected: ${selectedNames.length}/2`;
-    document.getElementById('next-btn-container').classList.toggle('hidden', selectedNames.length === 0);
-}
+    <script>
+        const VALID_ID = "VPB1001";
+        const VALID_PASS = "V1234";
 
-function goToForm(){
-    document.getElementById('home-view').classList.add('hidden');
-    document.getElementById('form-view').classList.remove('hidden');
-}
+        function handleLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('member-id').value.toUpperCase();
+            const pass = document.getElementById('vip-password').value;
+            const error = document.getElementById('error-txt');
 
-function backToSelection(){
-    document.getElementById('form-view').classList.add('hidden');
-    document.getElementById('home-view').classList.remove('hidden');
-}
-
-async function sendToLine(){
-    const date = document.getElementById('book-date').value;
-    const time = document.getElementById('book-time').value;
-    const course = document.getElementById('book-course').value;
-    const bookedYet = document.querySelector('input[name="booked-yet"]:checked')?.value || "No";
-
-    if(!date || !time || !course){ alert("กรุณากรอกข้อมูลให้ครบถ้วน"); return; }
-
-    const msg = encodeURIComponent(
-        `📍 New Booking: Bangkok ParTee\n👯 Selected: ${selectedNames.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Booked Course: ${bookedYet}`
-    );
-    window.location.href = `${LINE_URL}?text=${msg}`;
-}
-</script>
+            if(id === VALID_ID && pass === VALID_PASS) {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('home-view').classList.remove('hidden');
+            } else {
+                error.classList.remove('hidden');
+                setTimeout(() => error.classList.add('hidden'), 3000);
+            }
+        }
+    </script>
 </body>
 </html>
