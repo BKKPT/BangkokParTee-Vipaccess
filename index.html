@@ -21,7 +21,7 @@
         
         .font-serif { font-family: 'Playfair Display', serif; }
         .bg-full { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; object-fit: cover; }
-        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2; transition: all 0.5s; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2; transition: all 0.5s; }
 
         .glass-card {
             background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -47,12 +47,12 @@
 
         .selected-card { border: 3px solid #d4af37 !important; transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
         
-        #watermark {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            pointer-events: none; z-index: 9999; overflow: hidden; opacity: 0.08; 
-            display: flex; flex-wrap: wrap; justify-content: space-around; 
-            align-content: space-around; transform: rotate(-30deg);
+        /* แก้ไข Watermark ให้ลื่นไหลขึ้น */
+        #watermark-layer {
+            position: fixed; inset: 0; pointer-events: none; z-index: 9999; 
+            opacity: 0.05; display: flex; flex-wrap: wrap; transform: rotate(-30deg) scale(1.5);
         }
+        .wm-text { font-size: 14px; font-weight: bold; color: #d4af37; margin: 40px; white-space: nowrap; }
 
         .info-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.1); padding: 8px; border-radius: 10px; }
         .info-label { font-size: 9px; color: #d4af37; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -65,13 +65,7 @@
 </head>
 <body>
 
-    <div id="watermark">
-        <script>
-            for (let i = 0; i < 20; i++) {
-                document.write('<span style="font-size: 18px; font-weight: bold; color: #d4af37; margin: 60px;">BANGKOK PARTEE VIP</span>');
-            }
-        </script>
-    </div>
+    <div id="watermark-layer"></div>
 
     <img id="bg-img" class="bg-full" src="https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png">
     <div id="bg-mask" class="bg-overlay"></div>
@@ -113,7 +107,7 @@
     </div>
 
     <div id="profile-modal" class="hidden fixed inset-0 z-[300] bg-black flex flex-col fade-in">
-        <button onclick="closeProfile()" class="absolute top-6 right-6 z-[310] text-white text-3xl bg-black/50 w-12 h-12 rounded-full">&times;</button>
+        <button onclick="closeProfile()" class="absolute top-6 right-6 z-[310] text-white text-3xl bg-black/50 w-12 h-12 rounded-full flex items-center justify-center">&times;</button>
         <div class="swiper mySwiper flex-grow">
             <div class="swiper-wrapper" id="modal-slides"></div>
             <div class="swiper-pagination"></div>
@@ -217,23 +211,32 @@
                 photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
                 video: null
             },
-                {
-        id: "BPC26005T",
-        name: "Junie H165/53   34-26,37", 
-price: "6,500 THB", 
-        golfScore: "⛳ 115+ ", "Finanacial, Singer", 
-        language: "Eng-Good Conversation , Chinese Basic",
-        drink: "Social Drinker",
-        workDays: "Everyday",
-        character: "Professional Entertainer & Socialize Person … I have experience in entertainment, including singing and dancing, which gives me a good understanding of creating atmosphere, conversation, and understanding client feelings. I can adapt to a wide range of people. ..",
-        shift: " Night Golf",
-         cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
+            {
+                id: "BPC26005T",
+                name: "Junie H165/53 34-26,37", 
+                price: "6,500 THB", 
+                golfScore: "⛳ 115+", 
+                language: "Eng-Good Conversation , Chinese Basic",
+                drink: "Social Drinker",
+                workDays: "Everyday",
+                character: "Professional Entertainer (Singer/Financial Background) … I have experience in entertainment, including singing and dancing, which gives me a good understanding of creating atmosphere.",
+                shift: "Night Golf",
+                cover: "https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png", 
                 photos: ["https://raw.githubusercontent.com/BKKPT/BangkokParTee-Vipaccess/images/B35F50FC-CD71-4BC9-BC30-12277865EDA9.png"], 
                 video: null
-            },
+            }
         ];
 
-        let selected = [], currentSwiperGirl = null, swiper;
+        let selected = [], currentSwiperGirl = null, swiperInstance;
+
+        // --- Watermark Generator ---
+        const wmLayer = document.getElementById('watermark-layer');
+        for (let i = 0; i < 60; i++) {
+            const span = document.createElement('span');
+            span.className = 'wm-text';
+            span.innerText = 'BANGKOK PARTEE VIP';
+            wmLayer.appendChild(span);
+        }
 
         // --- Security Features ---
         document.addEventListener('contextmenu', e => e.preventDefault());
@@ -248,7 +251,9 @@ price: "6,500 THB",
             if (id === VALID_ID && pass === VALID_PASS) {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('intro-view').classList.remove('hidden');
-            } else { document.getElementById('err-msg').classList.remove('hidden'); }
+            } else { 
+                document.getElementById('err-msg').classList.remove('hidden'); 
+            }
         }
 
         function startGallery() {
@@ -260,7 +265,7 @@ price: "6,500 THB",
         function renderList() {
             document.getElementById('main-gallery').innerHTML = companions.map(c => `
                 <div id="card-${c.id}" class="cursor-pointer group">
-                    <div onclick="openProfile('${c.id}')" class="rounded-2xl overflow-hidden border border-white/10 card-frame bg-zinc-900 aspect-[3/4]">
+                    <div onclick="openProfile('${c.id}')" class="rounded-2xl overflow-hidden border border-white/10 card-frame bg-zinc-900 aspect-[3/4] relative">
                         <img src="${c.cover}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <p class="text-center mt-3 text-[#d4af37] font-bold text-[10px] uppercase tracking-widest">${c.name.split(' ')[0]}</p>
@@ -296,31 +301,42 @@ price: "6,500 THB",
             } else { vBtn.classList.add('hidden'); }
 
             document.getElementById('profile-modal').classList.remove('hidden');
-            if (swiper) swiper.destroy();
-            swiper = new Swiper(".mySwiper", { pagination: { el: ".swiper-pagination", clickable: true } });
+            
+            if (swiperInstance) swiperInstance.destroy();
+            swiperInstance = new Swiper(".mySwiper", { 
+                pagination: { el: ".swiper-pagination", clickable: true },
+                observer: true,
+                observeParents: true
+            });
 
             const sBtn = document.getElementById('modal-select-btn');
-            sBtn.onclick = () => toggleSelect(currentSwiperGirl.name);
-            sBtn.innerText = selected.includes(currentSwiperGirl.name) ? "Remove Selection" : "Add to Selection";
-            sBtn.className = selected.includes(currentSwiperGirl.name) ? "w-full py-4 rounded-xl bg-red-900/50 text-white border border-red-500 font-bold uppercase text-xs" : "gold-btn shadow-2xl";
+            const isSelected = selected.includes(currentSwiperGirl.id);
+            sBtn.innerText = isSelected ? "Remove Selection" : "Add to Selection";
+            sBtn.className = isSelected ? "w-full py-4 rounded-xl bg-red-900/50 text-white border border-red-500 font-bold uppercase text-xs" : "gold-btn shadow-2xl";
+            sBtn.onclick = () => toggleSelect(currentSwiperGirl.id);
         }
 
-        function toggleSelect(name) {
-            if (selected.includes(name)) { selected = selected.filter(n => n !== name); } 
-            else {
+        function toggleSelect(id) {
+            if (selected.includes(id)) { 
+                selected = selected.filter(i => i !== id); 
+            } else {
                 if (selected.length >= 2) { 
                     alert("Maximum 2 companions allowed per reservation."); 
                     return; 
                 }
-                selected.push(name);
+                selected.push(id);
             }
-            closeProfile(); updateSelectionUI();
+            closeProfile(); 
+            updateSelectionUI();
         }
 
         function updateSelectionUI() {
             companions.forEach(c => {
                 const card = document.getElementById(`card-${c.id}`)?.querySelector('.card-frame');
-                if (card) card.classList.toggle('selected-card', selected.includes(c.name));
+                if (card) {
+                    if (selected.includes(c.id)) card.classList.add('selected-card');
+                    else card.classList.remove('selected-card');
+                }
             });
             document.getElementById('selection-count').innerText = `Selected: ${selected.length}/2`;
             document.getElementById('next-btn-container').classList.toggle('hidden', selected.length === 0);
@@ -343,14 +359,24 @@ price: "6,500 THB",
         function backToHome() { document.getElementById('form-view').classList.add('hidden'); document.getElementById('home-view').classList.remove('hidden'); }
 
         function confirmBooking() {
-            const date = document.getElementById('book-date').value, time = document.getElementById('book-time').value, course = document.getElementById('book-course').value;
+            const date = document.getElementById('book-date').value;
+            const time = document.getElementById('book-time').value;
+            const course = document.getElementById('book-course').value;
             const booked = document.querySelector('input[name="booked-yet"]:checked')?.value || "No";
+            
             if(!date || !time || !course) { alert("Please complete all reservation fields."); return; }
-            const msg = encodeURIComponent(`📍 *NEW RESERVATION*\n👯 Companions: ${selected.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Pre-booked: ${booked}`);
-            window.location.href = `${LINE_LINK}?text=${msg}`;
-            setTimeout(() => { window.location.reload(); }, 1500);
+            
+            const selectedNames = companions.filter(c => selected.includes(c.id)).map(c => c.name.split(' ')[0]);
+            
+            const msg = `📍 *NEW RESERVATION*\n👯 Companions: ${selectedNames.join(', ')}\n📅 Date: ${date}\n⏰ Tee-off: ${time}\n⛳ Course: ${course}\n✅ Pre-booked: ${booked}`;
+            
+            window.location.href = `${LINE_LINK}?text=${encodeURIComponent(msg)}`;
+            
+            setTimeout(() => { 
+                alert("Opening LINE for confirmation...");
+                window.location.reload(); 
+            }, 1000);
         }
     </script>
 </body>
 </html>
-
